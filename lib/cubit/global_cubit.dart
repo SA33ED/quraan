@@ -31,4 +31,28 @@ class GlobalCubit extends Cubit<GlobalState> {
     CacheHelper().cacheSoraAndAya(sora: sora, aya: aya);
     emit(UpdateSoraAndAya());
   }
+
+  void scrollAyaKey(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        final RenderObject? renderObject =
+            ayaKey.currentContext?.findRenderObject();
+        if (renderObject != null) {
+          Scrollable.ensureVisible(ayaKey.currentContext!);
+        }
+      },
+    );
+  }
+
+  void scrollSoraKey(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        final RenderObject? renderObject =
+            soraKey.currentContext?.findRenderObject();
+        if (renderObject != null) {
+          Scrollable.ensureVisible(soraKey.currentContext!);
+        }
+      },
+    );
+  }
 }

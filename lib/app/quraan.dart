@@ -22,10 +22,49 @@ class Quraan extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: BlocBuilder<GlobalCubit, GlobalState>(
         builder: (context, state) {
-          return const QuraanListScreen();
+          return const SplashScreen();
         },
       ),
       theme: ThemeData.dark(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    Future.delayed(
+      const Duration(seconds: 2),
+      () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const QuraanListScreen();
+            },
+          ),
+        );
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          "القرآن الكريم",
+          style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }
