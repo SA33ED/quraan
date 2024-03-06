@@ -10,6 +10,7 @@ class QuraanListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<GlobalCubit>().scrollSoraKey(context);
     return BlocBuilder<GlobalCubit, GlobalState>(
       builder: (context, state) {
         final CacheHelper cacheHelper = CacheHelper();
@@ -59,16 +60,6 @@ class QuraanListScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          floatingActionButton: FloatingActionButton.large(
-            child: const Icon(Icons.remove_red_eye),
-            onPressed: () {
-              if (context.read<GlobalCubit>().soraKey.currentContext != null) {
-                Scrollable.ensureVisible(
-                  context.read<GlobalCubit>().soraKey.currentContext!,
-                );
-              }
-            },
           ),
         );
       },
