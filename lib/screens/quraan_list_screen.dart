@@ -10,7 +10,7 @@ class QuraanListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<GlobalCubit>().scrollSoraKey(context);
+    context.read<GlobalCubit>().scrollSoraKeyInFehres(context);
     return BlocBuilder<GlobalCubit, GlobalState>(
       builder: (context, state) {
         return Scaffold(
@@ -30,7 +30,7 @@ class QuraanListScreen extends StatelessWidget {
           floatingActionButton: FloatingActionButton.large(
             child: const Icon(Icons.remove_red_eye),
             onPressed: () {
-              context.read<GlobalCubit>().scrollSoraKey(context);
+              context.read<GlobalCubit>().scrollSoraKeyInFehres(context);
             },
           ),
         );
