@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quraan/cubit/global_cubit.dart';
 import 'package:quraan/cubit/global_state.dart';
-import 'package:quraan/screens/quraan_list_screen.dart';
+import 'package:quraan/screens/ayat_screen.dart';
 
 class Quraan extends StatelessWidget {
   const Quraan({super.key});
@@ -41,13 +41,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 1),
       () {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const QuraanListScreen();
+              return const AyatScreen();
             },
           ),
         );

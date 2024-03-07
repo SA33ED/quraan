@@ -5,18 +5,22 @@ import 'package:flutter/services.dart';
 import 'package:quraan/helpers/cache_helper.dart';
 import 'package:quraan/helpers/service_locator.dart';
 import 'dart:convert';
-
 import 'package:quraan/models/quraan_model/quraan_model.dart';
-import 'package:quraan/screens/ayat_screen.dart';
 
 class GlobalCubit extends Cubit<GlobalState> {
   GlobalCubit() : super(GlobalInitial());
 
   List<SoraModel> listData = [];
   List<Widget> allQuraan = [];
+  String selectedSora = sl<CacheHelper>().getCachedSora();
   final soraKeyInFehrs = GlobalKey();
   final soraKey = GlobalKey();
   final ayaKey = GlobalKey();
+  updateSelectedSora(String newSelectedSora) {
+    selectedSora = newSelectedSora;
+    emit(GetQuraanList());
+  }
+
   getQuraanList() async {
     final data = await rootBundle.loadString("assets/the_quraan.json");
     final jsonData = json.decode(data) as List;
@@ -26,23 +30,6 @@ class GlobalCubit extends Cubit<GlobalState> {
       );
     }
     emit(GetQuraanList());
-  }
-
-  getAllQuraan(selctedsoraModel) {
-    try {
-      emit(GetAllQuraanLoading());
-      allQuraan = List.generate(
-        listData.length,
-        (index) => Surah(
-          soraModel: listData[index],
-          selectedsoraModel: selctedsoraModel,
-        ),
-      );
-      emit(GetAllQuraanSuccess());
-      return allQuraan;
-    } catch (e) {
-      emit(GetAllQuraanFailure());
-    }
   }
 
   updateCachedSoraAndAya({

@@ -5,27 +5,51 @@ import 'package:quraan/cubit/global_state.dart';
 import 'package:quraan/helpers/cache_helper.dart';
 import 'package:quraan/helpers/service_locator.dart';
 import 'package:quraan/models/quraan_model/quraan_model.dart';
+import 'package:quraan/widgets/doaa_elkhatma.dart';
+import 'package:quraan/widgets/fehres_list.dart';
 
 class AyatScreen extends StatelessWidget {
-  const AyatScreen({super.key, required this.selctedsoraModel});
-  final SoraModel selctedsoraModel;
+  const AyatScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<GlobalCubit>();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     // });
     cubit.scrollSoraKey(context);
-
     return BlocBuilder<GlobalCubit, GlobalState>(
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(),
+          drawer: const Drawer(
+            backgroundColor: Colors.black,
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        FehresList(),
+                        DoaaElkhatma(),
+                        SizedBox(height: 120),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
           body: SingleChildScrollView(
             child: Column(
               children: List.generate(
                 cubit.listData.length,
                 (index) => Surah(
                   soraModel: cubit.listData[index],
-                  selectedsoraModel: selctedsoraModel,
+                  selectedSora: cubit.selectedSora,
                 ),
               ),
             ),
@@ -46,10 +70,9 @@ class AyatScreen extends StatelessWidget {
 }
 
 class Surah extends StatelessWidget {
-  const Surah(
-      {super.key, required this.soraModel, required this.selectedsoraModel});
+  const Surah({super.key, required this.soraModel, required this.selectedSora});
   final SoraModel soraModel;
-  final SoraModel selectedsoraModel;
+  final String selectedSora;
 
   @override
   Widget build(BuildContext context) {
@@ -60,16 +83,24 @@ class Surah extends StatelessWidget {
         SurahNameCard(
             soraModel: soraModel,
             cacheHelper: cacheHelper,
-            selectedsoraModel: selectedsoraModel),
+            selectedSora: selectedSora),
         SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: List.generate(
               soraModel.ayat!.length,
-              (ayaIndex) => AyaCard(
-                  surahModel: soraModel,
-                  ayaIndex: ayaIndex,
-                  cacheHelper: cacheHelper),
+              (ayaIndex) => InkWell(
+                onLongPress: () {
+                  context.read<GlobalCubit>().updateCachedSoraAndAya(
+                      sora: soraModel.soraName!,
+                      aya: soraModel.ayat![ayaIndex].arabic!,
+                      index: ayaIndex);
+                },
+                child: AyaCard(
+                    surahModel: soraModel,
+                    ayaIndex: ayaIndex,
+                    cacheHelper: cacheHelper),
+              ),
             ),
           ),
         )
@@ -83,17 +114,17 @@ class SurahNameCard extends StatelessWidget {
     super.key,
     required this.soraModel,
     required this.cacheHelper,
-    required this.selectedsoraModel,
+    required this.selectedSora,
   });
 
   final SoraModel soraModel;
   final CacheHelper cacheHelper;
-  final SoraModel selectedsoraModel;
+  final String selectedSora;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      key: soraModel.soraName == selectedsoraModel.soraName
+      key: soraModel.soraName == selectedSora
           ? context.read<GlobalCubit>().soraKey
           : null,
       margin: const EdgeInsets.only(top: 32),
@@ -153,7 +184,7 @@ class AyaCard extends StatelessWidget {
                 TextSpan(
                   text: ayaIndex == 0 ? "" : " - $ayaIndex",
                   style: TextStyle(
-                    fontSize: 50,
+                    fontSize: 100,
                     fontWeight: FontWeight.bold,
                     color:
                         "${surahModel.soraName}${surahModel.ayat![ayaIndex].arabic}$ayaIndex" ==
