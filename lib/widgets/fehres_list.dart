@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quraan/cubit/global_cubit.dart';
 import 'package:quraan/cubit/global_state.dart';
+import 'package:quraan/font_size/font_size.dart';
 import 'package:quraan/helpers/cache_helper.dart';
 import 'package:quraan/helpers/service_locator.dart';
 
@@ -52,7 +53,7 @@ class FehresList extends StatelessWidget {
                       Text(
                         "${context.read<GlobalCubit>().listData[index].soraName}",
                         style: TextStyle(
-                          fontSize: 100,
+                          fontSize: kFontSize,
                           fontWeight: FontWeight.bold,
                           color: context
                                       .read<GlobalCubit>()

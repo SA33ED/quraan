@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quraan/cubit/global_cubit.dart';
 import 'package:quraan/cubit/global_state.dart';
+import 'package:quraan/font_size/font_size.dart';
 import 'package:quraan/helpers/cache_helper.dart';
 import 'package:quraan/helpers/service_locator.dart';
 import 'package:quraan/models/quraan_model/quraan_model.dart';
@@ -35,6 +36,7 @@ class AyatScreen extends StatelessWidget {
                       children: [
                         FehresList(),
                         DoaaElkhatma(),
+                        Ad3ya(),
                         SizedBox(height: 120),
                       ],
                     ),
@@ -133,7 +135,7 @@ class SurahNameCard extends StatelessWidget {
         child: Text(
           soraModel.soraName!,
           style: TextStyle(
-            fontSize: 100,
+            fontSize: kFontSize,
             fontWeight: FontWeight.bold,
             color: soraModel.soraName == cacheHelper.getCachedSora()
                 ? Colors.red
@@ -172,7 +174,7 @@ class AyaCard extends StatelessWidget {
                 TextSpan(
                   text: "${surahModel.ayat![ayaIndex].arabic}",
                   style: TextStyle(
-                    fontSize: 100,
+                    fontSize: kFontSize,
                     fontWeight: FontWeight.bold,
                     color:
                         "${surahModel.soraName}${surahModel.ayat![ayaIndex].arabic}$ayaIndex" ==
@@ -184,7 +186,7 @@ class AyaCard extends StatelessWidget {
                 TextSpan(
                   text: ayaIndex == 0 ? "" : " - $ayaIndex",
                   style: TextStyle(
-                    fontSize: 100,
+                    fontSize: kFontSize,
                     fontWeight: FontWeight.bold,
                     color:
                         "${surahModel.soraName}${surahModel.ayat![ayaIndex].arabic}$ayaIndex" ==
